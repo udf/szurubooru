@@ -1,6 +1,7 @@
 from typing import List
 
 import sqlalchemy as sa
+from sqlalchemy.schema import Index
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.orderinglist import ordering_list
@@ -96,6 +97,13 @@ class PostFavorite(Base):
 
 class PostNote(Base):
     __tablename__ = "post_note"
+    __table_args__ = (
+        Index(
+            'post_note_idx', 'text',
+            postgresql_ops={'text': 'gin_trgm_ops'},
+            postgresql_using='gin'
+        ),
+    )
 
     post_note_id = sa.Column("id", sa.Integer, primary_key=True)
     post_id = sa.Column(

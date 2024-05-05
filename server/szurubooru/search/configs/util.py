@@ -156,6 +156,21 @@ def create_str_filter(
     return wrapper
 
 
+def create_full_text_filter(column: SaColumn) -> Filter:
+    def wrapper(
+        query: SaQuery,
+        criterion: Optional[criteria.BaseCriterion],
+        negated: bool,
+    ) -> SaQuery:
+        assert criterion
+        expr = column.op('%%>>')(criterion.original_text)
+        if negated:
+            expr = ~expr
+        return query.filter(expr)
+
+    return wrapper
+
+
 def apply_date_criterion_to_column(
     column: SaQuery, criterion: criteria.BaseCriterion
 ) -> SaQuery:

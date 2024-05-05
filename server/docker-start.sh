@@ -5,4 +5,4 @@ cd /opt/app
 alembic upgrade head
 
 echo "Starting szurubooru API on port ${PORT} - Running on ${THREADS} threads"
-exec waitress-serve-3 --port ${PORT} --threads ${THREADS} szurubooru.facade:app
+waitress-serve-3 --port ${PORT} --threads ${THREADS} --expose-tracebacks szurubooru.facade:app

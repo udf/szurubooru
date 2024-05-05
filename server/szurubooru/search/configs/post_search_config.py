@@ -106,7 +106,7 @@ def _note_filter(
         model.Post.post_id,
         model.PostNote.post_id,
         model.PostNote.text,
-        search_util.create_str_filter,
+        search_util.create_full_text_filter,
     )(query, criterion, negated)
 
 
@@ -369,7 +369,7 @@ class PostSearchConfig(BaseSearchConfig):
                         model.Post.safety, _safety_transformer
                     ),
                 ),
-                (["note-text"], _note_filter),
+                (["note-text", "text"], _note_filter),
                 (
                     ["flag"],
                     search_util.create_str_filter(

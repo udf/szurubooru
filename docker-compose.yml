@@ -7,7 +7,7 @@ version: '2'
 services:
 
   server:
-    image: szurubooru/server:latest
+    build: server
     depends_on:
       - sql
     environment:
@@ -27,7 +27,7 @@ services:
       - "./server/config.yaml:/opt/app/config.yaml"
 
   client:
-    image: szurubooru/client:latest
+    build: client
     depends_on:
       - server
     environment:
@@ -39,8 +39,10 @@ services:
       - "${PORT}:80"
 
   sql:
-    image: postgres:11-alpine
+    image: postgres:16-alpine
     restart: unless-stopped
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_USER:
       POSTGRES_PASSWORD:
