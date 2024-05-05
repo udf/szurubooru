@@ -451,6 +451,20 @@ class ReadyToDrawState extends ActiveState {
     }
 
     evtCanvasMouseDown(e) {
+        if (e.ctrlKey) {
+            this._note = this._createNote();
+            this._note.polygon.add(new Point(0, 0));
+            this._note.polygon.add(new Point(1, 0));
+            this._note.polygon.add(new Point(1, 1));
+            this._note.polygon.add(new Point(0, 1));
+            this._control._deleteDomNode(this._note);
+            this._control._post.notes.add(this._note);
+            this._control._state = new SelectedState(
+                this._control,
+                this._note
+            );
+            return;
+        }
         const mousePoint = this._getPointFromEvent(e);
         if (e.shiftKey) {
             this._control._state = new DrawingRectangleState(
