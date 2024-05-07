@@ -163,7 +163,7 @@ def create_full_text_filter(column: SaColumn) -> Filter:
         negated: bool,
     ) -> SaQuery:
         assert criterion
-        expr = column.op('%%>>')(criterion.original_text)
+        expr = column.op('%%>')(criterion.original_text)
         if negated:
             expr = ~expr
         return query.filter(expr)
