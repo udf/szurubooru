@@ -106,6 +106,18 @@ def _note_filter(
         model.Post.post_id,
         model.PostNote.post_id,
         model.PostNote.text,
+        search_util.create_str_filter,
+    )(query, criterion, negated)
+
+
+def _note_full_text_filter(
+    query: SaQuery, criterion: Optional[criteria.BaseCriterion], negated: bool
+) -> SaQuery:
+    assert criterion
+    return search_util.create_subquery_filter(
+        model.Post.post_id,
+        model.PostNote.post_id,
+        model.PostNote.text,
         search_util.create_full_text_filter,
     )(query, criterion, negated)
 
@@ -369,7 +381,8 @@ class PostSearchConfig(BaseSearchConfig):
                         model.Post.safety, _safety_transformer
                     ),
                 ),
-                (["note-text", "text"], _note_filter),
+                (["note-text"], _note_filter),
+                (["text"], _note_full_text_filter),
                 (
                     ["flag"],
                     search_util.create_str_filter(

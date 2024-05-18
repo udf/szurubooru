@@ -64,7 +64,11 @@
         </tr>
         <tr>
             <td><code>note-text</code></td>
-            <td>having given note text (accepts wildcards)</td>
+            <td>having given note text (exact match, accepts wildcards)</td>
+        <tr>
+            <td><code>text</code></td>
+            <td>having given note text (alphanumeric trigram search)</td>
+        </tr>
         </tr>
         <tr>
             <td><code>relation-count</code></td>
