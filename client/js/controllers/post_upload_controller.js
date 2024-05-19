@@ -196,6 +196,11 @@ class PostUploadController {
         // you'll need to change the line below to `post.source = uploadable.source || uploadable.url;`
         if (uploadable.file && uploadable.file.name) {
             post.source = 'file://' + uploadable.file.name;
+            // gelbooru ids downloaded with gallery-dl
+            let gelbooru_id = uploadable.file.name.match(/^gelbooru_(\d+)_[a-fA-F\d]{32}\./);
+            if (gelbooru_id != null) {
+                post.source = 'https://gelbooru.com/index.php?page=post&s=view&id=' + gelbooru_id[1];
+            }
         }
         if (uploadable.url) {
             post.source = uploadable.url;
