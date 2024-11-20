@@ -27,7 +27,10 @@ services:
       - "./server/config.yaml:/opt/app/config.yaml"
 
   client:
-    build: client
+    build: 
+      context: client
+      args:
+        BUILD_INFO: ${BUILD_INFO}
     depends_on:
       - server
     environment:
@@ -46,5 +49,9 @@ services:
     environment:
       POSTGRES_USER:
       POSTGRES_PASSWORD:
+    command:
+      - "postgres"
+      - "-c"
+      - "jit=off"
     volumes:
       - "${MOUNT_SQL}:/var/lib/postgresql/data"
