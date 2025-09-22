@@ -156,16 +156,6 @@ function makeCssName(text, suffix) {
     return suffix + "-" + text.replace(/[^a-z0-9]/g, "_");
 }
 
-function escapeHtml(unsafe) {
-    return unsafe
-        .toString()
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&apos;");
-}
-
 function arraysDiffer(source1, source2, orderImportant) {
     source1 = [...source1];
     source2 = [...source2];
@@ -211,6 +201,15 @@ function getPrettyName(tag) {
     return tag;
 }
 
+function preloadPostImages(post) {
+    if (!["image", "animation"].includes(post.type)) {
+        return;
+    }
+    const img = new Image()
+    img.fetchPriority = "low";
+    img.src = post.contentUrl;
+}
+
 module.exports = {
     range: range,
     formatRelativeTime: formatRelativeTime,
@@ -221,7 +220,7 @@ module.exports = {
     enableExitConfirmation: enableExitConfirmation,
     disableExitConfirmation: disableExitConfirmation,
     confirmPageExit: confirmPageExit,
-    escapeHtml: escapeHtml,
+    escapeHtml: markdown.escapeHtml,
     makeCssName: makeCssName,
     splitByWhitespace: splitByWhitespace,
     arraysDiffer: arraysDiffer,
@@ -229,4 +228,5 @@ module.exports = {
     escapeSearchTerm: escapeSearchTerm,
     dataURItoBlob: dataURItoBlob,
     getPrettyName: getPrettyName,
+    preloadPostImages: preloadPostImages,
 };
