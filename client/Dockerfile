@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:lts-alpine as development
+FROM node:lts-alpine as development
 WORKDIR /opt/app
 
 RUN apk --no-cache add \
@@ -21,7 +21,7 @@ CMD ["/opt/app/docker-start-dev.sh"]
 VOLUME ["/data"]
 
 
-FROM --platform=$BUILDPLATFORM node:lts as builder
+FROM node:lts as builder
 WORKDIR /opt/app
 
 COPY package.json package-lock.json ./
@@ -34,7 +34,7 @@ ARG CLIENT_BUILD_ARGS=""
 RUN BASE_URL="__BASEURL__" node build.js --gzip ${CLIENT_BUILD_ARGS}
 
 
-FROM --platform=$BUILDPLATFORM scratch as approot
+FROM scratch as approot
 
 COPY docker-start.sh /
 
